@@ -164,6 +164,7 @@ catkin_install_python(PROGRAMS
   scripts/sensor_interface.py
   scripts/mock_sensor.py
   scripts/arbiter_node.py
+  scripts/launch_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

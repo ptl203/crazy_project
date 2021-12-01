@@ -17,7 +17,7 @@ class arbiter_node:
         self.statusPub = rospy.Publisher("/system_status", status, queue_size=10)
 
         #Init Variable Status
-        self.launch_status = True
+        self.launch_status = False
         self.task_status = True
         self.land_status = True
         self.ranger_status = False
@@ -56,11 +56,11 @@ def main(args):
     #     rospy.loginfo("Spinning")
     # except KeyboardInterrupt:
     #     print("Shutting Down")
-    rospy.loginfo("Publishing System Stating") #INITIALIZING, READY, LAUNCHING, IN_AIR, ON_TASK, TASK_COMPLETE, LANDING, DONE
-    while not rospy.is_shutdown():
-        rospy.loginfo('Publishing System Status')
-        try:
-            if node.system_status in ['INITIALIZING', 'READY']:
+    try:
+        rospy.loginfo("Publishing System Stating") #INITIALIZING, READY, LAUNCHING, IN_AIR, ON_TASK, TASK_COMPLETE, LANDING, DONE
+        while not rospy.is_shutdown():
+            rospy.loginfo('Publishing System Status')
+            if node.system_status in ['INITIALIZING']:
                 if node.launch_status and node.task_status and node.land_status and node.ranger_status:
                     rospy.loginfo('Publishing READY Status')
                     statusMsg = status()
@@ -72,8 +72,8 @@ def main(args):
                     statusMsg.status = 'INITIALIZING'
                     node.statusPub.publish(statusMsg)
             rate.sleep()
-        except KeyboardInterrupt:
-            print("Shutting Down")
+    except KeyboardInterrupt:
+        print("Shutting Down")
 
 if __name__ == '__main__':
     main(sys.argv)
